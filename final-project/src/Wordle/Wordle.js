@@ -1,111 +1,152 @@
 import React, {useEffect, useState} from 'react';
-import db from '../db';
+import words from './words.txt';
 import Keyboard from "./Keyboard";
-import Tiles from "./Tiles";
-const RANDOM_BASE_URL = `https://random-word-api.herokuapp.com/word?number=100&swear=0`;
-const DICTIONARY_BASE_URL = `https://www.dictionaryapi.com/api/v3/references/collegiate/json/`;
+import AllTiles from './AllTiles';
+import CurrentRow from './CurrentRow';
+import '../App.css';
 
 export default function Wordle() {
+    const [isLoading, setIsLoading] = useState(true)
     const [letters, setLetters] = useState([]);
     const [attempts, setAttempts] = useState([]);
-    const [remaining, setRemaining] = useState(6);
-    const [answer, setAnswer] = useState([]);
-    let fiveLetterWord = 'THERE';
+    const [emptyRows, setEmptyRows] = useState([]);
+    // const [emptySquares, setEmptySquares] = useState([]);  
 
-    // useEffect(()=> {
-    //     fetch(RANDOM_BASE_URL)
-    //     .then(function(data){
-    //         return data.json();
-    //     })
-    //     .then(function(responseJson) {
-    //         for (let i = 0; i < responseJson.length; i++){
-    //             if (responseJson[i].length === 5) {
-    //                 fiveLetterWord = responseJson[i];
-    //                 break;
-    //             }
-    //         }
-    //         setAnswer(fiveLetterWord.split(''));
-    //         console.log(answer);
-    //     }); 
-    // }, []);
+    const [gameOver, setGameOver] = useState(false);
+    const [answer, setAnswer] = useState("");
 
-    // const url = `${DICTIONARY_BASE_URL}${wordInput.value}?key=${API_KEY}`;
-    // let wordMatch = false;
+    const checkIfWord = () => {
+        const url = `${process.env.REACT_APP_DICTIONARY_BASE_URL}${letters.join('')}?key=${process.env.REACT_APP_API_KEY}`;
+        let wordMatch = false;
 
-    // fetch(url)
-    // .then(function(data){
-    //     return data.json();
-    // })
-    // .then(function(responseJson) {
-    //     if (typeof(responseJson[0]) !== 'string' && responseJson.length > 0) {
-    //         wordMatch = true;
-    //     };
-    //     if (wordMatch === true) {
-    //         wordInput.setCustomValidity('');
-    //         checkAnswer(e);
-    //     } else {
-    //         wordInput.setCustomValidity('This is not a valid word');
-    //         wordInput.reportValidity();
-    //     };
-    // });
+        fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (typeof(data[0]) !== 'string' && data.length > 0) {
+                setAttempts(attempts => [...attempts, letters]);
+                setLetters([]);
+            }
+        })
+        .catch(console.error);
+    };
+
+    const displayProgress = (index, letter) => {
+        let temp = false;
+        for (let j = 0; j < 5; j++) {
+            if (letter === answer[j]) {
+                temp = true;
+            }  
+        }
+        if (letter === answer[index]) {
+            return ('square correct');
+        }
+        else if (temp) {
+            return ('square mixed');
+        }  
+        else if (!temp) {
+            if (letter === '') {
+                return ('square');
+            }
+            return ('square incorrect');
+        } 
+    }
 
     const selectKey = (key) => {
-        if (letters.length < 5) {
+        if (letters.length < 5 && attempts.length !== 6) {
             setLetters([...letters, key]);
-        }
-    }
+        };
+    };
 
     const removeKey = () => {
         if (letters.length > 0) {
             setLetters(letters.slice(0, -1));
-        }
-    }
+        };
+    };
 
-    const enterKey = () => {
-        if (remaining > 0) {
-            if (letters.length === 5) {
-                setAttempts(attempts.slice(1));
-                setAttempts(attempts => [...attempts, letters]);
-                setLetters('');
-                setRemaining(remaining - 1);
-            }
-            // checkCharacters();
+    const enterKey = async () => {
+        if (letters.length === 5 && attempts.length !== 6 && (/\b[A-Za-z]{5}\b/.test(letters.join('')))) {
+            checkIfWord();
+        };                
+    };
+
+    useEffect(() => {
+        const randomNumber = Math.floor(Math.random() * 5756);
+        fetch(words)
+        .then(response => response.json())
+        .then(text => {
+            setAnswer(text[randomNumber].toUpperCase())
+            setIsLoading(false);
+        })
+        .catch(console.error)
+    }, []);
+
+    useEffect(() => {
+        const temp = []; 
+        for (let i = 4; i >= attempts.length; i--) {
+            temp.push(['','','','','']);
+            setEmptyRows(temp);    
         }
-    }
+    }, [attempts]);
 
     // useEffect(() => {
-    //     if (letters !== '') {
-    //         setAttempts(attempts => [letters]);
+    //     const temp = []; 
+    //     for (let i = 4; i >= letters.length; i--) {
+    //         temp.push(['']);
+    //         setEmptySquares(temp);
     //     }
     // }, [letters]);
 
-    console.log(letters);
-    console.log(attempts);
-
-    useEffect(() => {
-        for (let i = 0; i < 6; i++) {
-            if (attempts.length != 6) {
-                setAttempts(attempts => [...attempts, ['']]);
-            }
-        }
-    }, []);
+    //console.log(emptyRows)
+    // console.log(emptySquares);
+    //console.log(letters);
+    // console.log(attempts);
+    // console.log(answer);
     
     return ( 
         <div>
             {/* Play Wordle! */}
-            <div>
-                <Tiles 
-                    letters = {letters}
-                    attempts = {attempts}
-                />
-            </div>
-            <div>
-                <Keyboard 
-                    selectKey = {selectKey}
-                    removeKey = {removeKey}
-                    enterKey = {enterKey}
-                />
-            </div>
+            {isLoading === true && <div>loading...</div>}  
+            {isLoading !== true && (
+            <>
+                <div className='tiles'>
+                    <div>
+                        <AllTiles 
+                            attempts = {attempts}
+                            displayProgress = {displayProgress}
+                        />
+                    </div>
+                    <div>
+                        {attempts.length !== 6 && (
+                        <>
+                            <div>
+                                <CurrentRow 
+                                    attempt = {letters}
+                                />
+                            </div>
+                        </>)}
+                    </div>
+                    <div>
+                        {attempts.length < 5 && (
+                        <>
+                            <div>
+                                <AllTiles 
+                                    attempts = {emptyRows}
+                                    displayProgress = {displayProgress}
+                                />
+                            </div>
+                        </>)}
+                    </div>
+                </div>
+                
+                <div>
+                    <Keyboard 
+                        selectKey = {selectKey}
+                        removeKey = {removeKey}
+                        enterKey = {enterKey}
+                    />
+                </div>
+            </> 
+            )}
         </div>
-    )
-}
+    );
+};

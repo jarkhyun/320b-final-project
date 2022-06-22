@@ -1,7 +1,4 @@
 export default function Keyboard({selectKey, removeKey, enterKey}) {
-    function getValue(e){
-        const variable = e.value;
-    }
 
     return ( 
             <div id="VirtualKey">

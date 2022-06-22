@@ -1,44 +1,21 @@
-export default function TileRow({letters, attempt}) {
+import Tile from './Tile';
 
-    // if (letters !== '') {
-    //     return (
-    //         <div className='row'>
-    //             <div className="square">
-    //                 <p className="text">{letters[0]}</p>
-    //             </div>
-    //             <div className="square">
-    //                 <p className="text">{letters[1]}</p>
-    //             </div>
-    //             <div className="square">
-    //                 <p className="text">{letters[2]}</p>
-    //             </div>
-    //             <div className="square">
-    //                 <p className="text">{letters[3]}</p>
-    //             </div>
-    //             <div className="square">
-    //                 <p className="text">{letters[4]}</p>
-    //             </div>
-    //         </div>
-    //     )
-    // }
-    
+export default function TileRow({attempt, displayProgress}) {
+
+    const tiles = attempt.map((letter, index, array) =>
+        <Tile
+            key = {index}
+            index = {index}
+            letter = {letter}
+            array = {array}
+            displayProgress = {displayProgress}
+        />
+    )
+
     return ( 
-            <div className='row'>
-                <div className="square">
-                    <p className="text">{attempt[0]}</p>
-                </div>
-                <div className="square">
-                    <p className="text">{attempt[1]}</p>
-                </div>
-                <div className="square">
-                    <p className="text">{attempt[2]}</p>
-                </div>
-                <div className="square">
-                    <p className="text">{attempt[3]}</p>
-                </div>
-                <div className="square">
-                    <p className="text">{attempt[4]}</p>
-                </div>
-            </div>
+        <div className='row'>
+            {tiles}
+        </div>
+
     )
 }
