@@ -15,28 +15,33 @@ export default function Nav() {
     }, []);
     return (
         <div>
-            <ul>
-                <li><Link to="/">Home</Link></li>
-                <li><Link to="/wordle">Wordle</Link></li>
-                {/* <li><Link to="/quordle">Quordle</Link></li> */}
-            </ul>
-            {user ? (
-                <div>
-                    <p>{user.displayName}</p>
-                    <button
-                        onClick={() => {
-                            firebase.auth().signOut();
-                            navigate('/');
-                        }}
-                    >
-                        Sign Out
-                    </button>
+            <div className='TitleBar'>
+                <div className='Nav'>
+                    <div><Link to="/">Home</Link></div>
+                    <div><Link to="/wordle">Wordle</Link></div>
+                    {/* <li><Link to="/quordle">Quordle</Link></li> */}
                 </div>
-            ) : (
-                <div>
-                    <Link to ="/">Sign In</Link>
+                <h1>Wonderful World of Wordle</h1>
+                <div className='SignIn'>
+                    {user ? (
+                    <div>
+                        <p>{user.displayName}</p>
+                        <button
+                            onClick={() => {
+                                firebase.auth().signOut();
+                                navigate('/');
+                            }}
+                        >
+                            Sign Out
+                        </button>
+                    </div>
+                ) : (
+                    <div>
+                        <Link to ="/">Sign In</Link>
+                    </div>
+                )}
                 </div>
-            )}
+            </div>
         </div>
     )
 }

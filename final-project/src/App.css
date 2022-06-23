@@ -1,3 +1,8 @@
+.App {
+  display: grid;
+  place-self: center stretch;
+  height: 100vh;
+}
 .square {
   display: flex;
   width: 60px;
@@ -27,8 +32,9 @@
 #VirtualKey {
   display: grid;
   place-items: end center;
+  align-content: end;  
   gap: 5px;
-  margin-top: 20px;
+  margin-bottom: 20px;
 }
 input {
   font-size: 20px;
@@ -54,4 +60,26 @@ input {
 
 .incorrect {
   background-color: grey;
+}
+.TitleBar {
+  border-bottom: 1px solid black;
+  display:flex;
+  flex-flow: row;
+  gap: 10px;
+  justify-content: space-around;
+}
+.Nav {
+  display: grid;
+  gap: 10px;
+  align-content: center;
+}
+.SignIn {
+  display: grid;
+  gap: 10px;
+  align-content: center;
+}
+
+.game {
+  display: grid;
+  align-content: space-between;
 }

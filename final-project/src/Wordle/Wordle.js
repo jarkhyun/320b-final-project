@@ -103,7 +103,7 @@ export default function Wordle() {
     // console.log(answer);
     
     return ( 
-        <div>
+        <div className='game'>
             {/* Play Wordle! */}
             {isLoading === true && <div>loading...</div>}  
             {isLoading !== true && (
