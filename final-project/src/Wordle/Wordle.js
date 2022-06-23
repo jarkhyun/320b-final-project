@@ -10,6 +10,7 @@ export default function Wordle() {
     const [letters, setLetters] = useState([]);
     const [attempts, setAttempts] = useState([]);
     const [emptyRows, setEmptyRows] = useState([]);
+    const [letterDetails, setLetterDetails] = useState({})
     // const [emptySquares, setEmptySquares] = useState([]);  
 
     const [gameOver, setGameOver] = useState(false);
@@ -38,17 +39,54 @@ export default function Wordle() {
             }  
         }
         if (letter === answer[index]) {
-            return ('square correct');
+            return ('correct slightlyLarger');
         }
         else if (temp) {
-            return ('square mixed');
+            return ('mixed slightlyLarger');
         }  
         else if (!temp) {
             if (letter === '') {
-                return ('square');
+                return ('');
             }
-            return ('square incorrect');
+            return ('incorrect slightlyLarger');
         } 
+    }
+
+    const displayKeyboardProgress = (value) => {
+        let checkKeyboard = false;
+        let checkCorrect = false;
+        let checkMixed = false;
+        if (attempts.length !== 0) {
+            for (let i = 0; i < attempts.length ;i++) {
+                for (let j = 0; j < 5; j++) {
+                    if (value === attempts[i][j]) {
+                        checkKeyboard = true;
+                    } 
+                    // for (let k = 0; k < 5; k++) {
+                    //     if (attempts[i][j] === answer[k]) {
+                    //         checkMixed = true;
+                    //     }
+                    // }
+                    // if (attempts[i][j] === answer[j]) {
+                    //     checkCorrect = true;
+                    // }
+                }
+            }
+
+            if (checkKeyboard && !checkMixed && !checkCorrect) {
+                return ('incorrect'); 
+            } else if (checkKeyboard && checkMixed && checkCorrect) {
+                checkCorrect = false;
+                checkMixed = false;
+                return ('correct');
+            } else if (checkKeyboard && checkMixed) {
+                checkCorrect = false;
+                checkMixed = false;
+                return ('mixed');
+            } 
+        } else {
+            return '';
+        }
     }
 
     const selectKey = (key) => {
@@ -143,6 +181,7 @@ export default function Wordle() {
                         selectKey = {selectKey}
                         removeKey = {removeKey}
                         enterKey = {enterKey}
+                        displayKeyboardProgress = {displayKeyboardProgress}
                     />
                 </div>
             </> 

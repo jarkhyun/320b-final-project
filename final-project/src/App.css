@@ -5,7 +5,7 @@
 }
 .square {
   display: flex;
-  width: 60px;
+  width: 60px ;
   height: 60px;
   background-color: white;
   border: 1px solid black;
@@ -34,6 +34,7 @@
   place-items: end center;
   align-content: end;  
   gap: 5px;
+  margin-top: 10px;
   margin-bottom: 20px;
 }
 input {
@@ -42,41 +43,56 @@ input {
   font-weight: bold;
 }
 .key {
-  width: 50px;
+  width: 45px;
   height: 60px;
+  border-radius: 10px;
+  border-style: hidden;
 }
 .big-key {
   width: 80px;
   height: 60px;
+  border-radius: 10px;
+  border-style: hidden;
 }
 
 .correct {
   background-color: green;
+  color: white;
+  border-style: hidden;
 }
-
+.slightlyLarger {
+  height: 62px;
+  width:62px;
+}
 .mixed {
-  background-color: yellow;
+  background-color: rgb(211, 197, 93);
+  color: white;
+  border-style: hidden;
 }
 
 .incorrect {
   background-color: grey;
+  color: white;
+  border-style: hidden;
 }
 .TitleBar {
   border-bottom: 1px solid black;
   display:flex;
   flex-flow: row;
   gap: 10px;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 .Nav {
   display: grid;
   gap: 10px;
   align-content: center;
+  margin-left: 10px;
 }
 .SignIn {
   display: grid;
   gap: 10px;
   align-content: center;
+  margin-right: 10px;
 }
 
 .game {

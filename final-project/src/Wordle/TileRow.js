@@ -2,7 +2,7 @@ import Tile from './Tile';
 
 export default function TileRow({attempt, displayProgress}) {
 
-    const tiles = attempt.map((letter, index, array) =>
+    const tilesRow = attempt.map((letter, index, array) =>
         <Tile
             key = {index}
             index = {index}
@@ -14,7 +14,7 @@ export default function TileRow({attempt, displayProgress}) {
 
     return ( 
         <div className='row'>
-            {tiles}
+            {tilesRow}
         </div>
 
     )
