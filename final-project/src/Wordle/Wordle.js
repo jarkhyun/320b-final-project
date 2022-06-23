@@ -72,17 +72,18 @@ export default function Wordle() {
                     // }
                 }
             }
-
             if (checkKeyboard && !checkMixed && !checkCorrect) {
                 return ('incorrect'); 
-            } else if (checkKeyboard && checkMixed && checkCorrect) {
-                checkCorrect = false;
-                checkMixed = false;
-                return ('correct');
-            } else if (checkKeyboard && checkMixed) {
-                checkCorrect = false;
-                checkMixed = false;
-                return ('mixed');
+            // if (checkKeyboard && !checkMixed && !checkCorrect) {
+            //     return ('incorrect'); 
+            // } else if (checkKeyboard && checkMixed && checkCorrect) {
+            //     checkCorrect = false;
+            //     checkMixed = false;
+            //     return ('correct');
+            // } else if (checkKeyboard && checkMixed) {
+            //     checkCorrect = false;
+            //     checkMixed = false;
+            //     return ('mixed');
             } 
         } else {
             return '';
